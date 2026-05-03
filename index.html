@@ -131,8 +131,7 @@
             }
         }
 
-        .mobile-nav-open,
-        .mobile-nav-close {
+        .mobile-nav-burger {
             display: none;
         }
 
@@ -146,10 +145,10 @@
                 position: fixed;
                 inset: 0;
                 z-index: 210;
-                background-color: rgba(0, 0, 0, 0.55);
+                background-color: #000000;
                 opacity: 0;
                 visibility: hidden;
-                transition: opacity 0.32s ease, visibility 0.32s ease;
+                transition: opacity 0.28s ease, visibility 0.28s ease;
                 pointer-events: none;
             }
 
@@ -168,13 +167,14 @@
                 max-height: 100dvh;
                 overflow-y: auto;
                 -webkit-overflow-scrolling: touch;
-                padding: 3rem 1.5rem 2rem;
+                padding: 3.25rem 1.5rem 2rem;
                 border-right: none;
                 border-bottom: none;
                 z-index: 220;
                 opacity: 1 !important;
                 transform: translateX(-100%) !important;
                 transition: transform 0.38s cubic-bezier(0.22, 1, 0.36, 1) !important;
+                background-color: var(--bg-color);
             }
 
             .layout-wrapper.mobile-sidebar-open .sidebar {
@@ -192,52 +192,72 @@
                 margin-top: 3rem;
             }
 
-            .mobile-nav-open {
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
+            .mobile-nav-burger {
+                display: block;
                 position: fixed;
-                bottom: 1.25rem;
-                right: 1.25rem;
-                z-index: 100;
-                padding: 0.65rem 1.1rem;
-                font-family: 'Zen Old Mincho', 'Noto Sans JP', serif;
-                font-size: 0.9rem;
-                color: var(--text-main);
-                background-color: #222;
-                border: 1px solid var(--accent-color);
-                cursor: pointer;
-                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45);
-            }
-
-            .mobile-nav-open:focus {
-                outline: 2px solid #666;
-                outline-offset: 2px;
-            }
-
-            .mobile-nav-close {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                position: sticky;
-                top: 0;
-                z-index: 2;
-                width: calc(100% + 3rem);
-                max-width: 100vw;
-                margin: -1rem -1.5rem 1.25rem;
-                padding: 0.75rem 1rem;
-                font-family: 'Zen Old Mincho', 'Noto Sans JP', serif;
-                font-size: 0.88rem;
-                color: var(--text-sub);
-                background-color: rgba(17, 17, 17, 0.92);
+                top: max(0.85rem, env(safe-area-inset-top, 0px));
+                left: max(0.85rem, env(safe-area-inset-left, 0px));
+                z-index: 260;
+                width: 40px;
+                height: 30px;
+                padding: 0;
+                margin: 0;
                 border: none;
-                border-bottom: 1px solid var(--accent-color);
+                background: transparent;
                 cursor: pointer;
-                text-align: center;
+                touch-action: manipulation;
             }
 
-            .mobile-nav-close:hover {
-                color: var(--text-main);
+            .mobile-nav-burger:focus {
+                outline: 2px solid #666;
+                outline-offset: 4px;
+            }
+
+            .mobile-nav-burger span {
+                display: block;
+                position: absolute;
+                height: 4px;
+                width: 100%;
+                background: #ffffff;
+                border-radius: 9px;
+                opacity: 1;
+                left: 0;
+                transform: rotate(0deg);
+                transition: 0.25s ease-in-out;
+            }
+
+            .mobile-nav-burger span:nth-of-type(1) {
+                top: 0;
+                transform-origin: left center;
+            }
+
+            .mobile-nav-burger span:nth-of-type(2) {
+                top: 50%;
+                transform: translateY(-50%);
+                transform-origin: left center;
+            }
+
+            .mobile-nav-burger span:nth-of-type(3) {
+                top: 100%;
+                transform-origin: left center;
+                transform: translateY(-100%);
+            }
+
+            .mobile-nav-burger.is-active span:nth-of-type(1) {
+                transform: rotate(45deg);
+                top: 0;
+                left: 5px;
+            }
+
+            .mobile-nav-burger.is-active span:nth-of-type(2) {
+                width: 0;
+                opacity: 0;
+            }
+
+            .mobile-nav-burger.is-active span:nth-of-type(3) {
+                transform: rotate(-45deg);
+                top: 28px;
+                left: 5px;
             }
         }
 
@@ -491,10 +511,15 @@
 </head>
 <body>
 
+<button type="button" class="mobile-nav-burger" id="mobile-nav-burger" aria-controls="sidebar" aria-expanded="false" aria-label="メニューを開く">
+    <span></span>
+    <span></span>
+    <span></span>
+</button>
+
 <div class="layout-wrapper" id="layout-wrapper">
     <div class="sidebar-backdrop" id="sidebar-backdrop" aria-hidden="true"></div>
     <aside class="sidebar" id="sidebar">
-        <button type="button" class="mobile-nav-close" id="mobile-nav-close" aria-label="メニューを閉じる">← 閉じる</button>
         <div class="sidebar-header">
             <span id="user-role" class="site-role"></span>
             <h1 id="user-name" class="site-title"></h1>
@@ -510,7 +535,6 @@
     </aside>
 
     <main class="main-content">
-        <button type="button" class="mobile-nav-open" id="mobile-nav-open" aria-controls="sidebar" aria-expanded="false">メニュー</button>
         <ul id="work-list" class="work-list"></ul>
     </main>
 </div>
@@ -652,8 +676,7 @@
 
         const layoutWrapper = document.getElementById('layout-wrapper');
         const sidebarBackdrop = document.getElementById('sidebar-backdrop');
-        const mobileNavOpen = document.getElementById('mobile-nav-open');
-        const mobileNavClose = document.getElementById('mobile-nav-close');
+        const mobileNavBurger = document.getElementById('mobile-nav-burger');
         const mqMobileNav = window.matchMedia('(max-width: 767px)');
         let mobileSidebarFooterRevealDone = false;
 
@@ -661,16 +684,23 @@
             return mqMobileNav.matches;
         }
 
-        function openMobileSidebar() {
+        function syncMobileNavBurger(isOpen) {
+            if (!mobileNavBurger) {
+                return;
+            }
+            mobileNavBurger.classList.toggle('is-active', isOpen);
+            mobileNavBurger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+            mobileNavBurger.setAttribute('aria-label', isOpen ? 'メニューを閉じる' : 'メニューを開く');
+        }
+
+        function toggleMobileSidebar() {
             if (!layoutWrapper || !isMobileNavLayout()) {
                 return;
             }
-            layoutWrapper.classList.add('mobile-sidebar-open');
-            document.body.style.overflow = 'hidden';
-            if (mobileNavOpen) {
-                mobileNavOpen.setAttribute('aria-expanded', 'true');
-            }
-            if (!mobileSidebarFooterRevealDone) {
+            const open = layoutWrapper.classList.toggle('mobile-sidebar-open');
+            document.body.style.overflow = open ? 'hidden' : '';
+            syncMobileNavBurger(open);
+            if (open && !mobileSidebarFooterRevealDone) {
                 mobileSidebarFooterRevealDone = true;
                 playSidebarFooterReveal();
             }
@@ -682,14 +712,11 @@
             }
             layoutWrapper.classList.remove('mobile-sidebar-open');
             document.body.style.overflow = '';
-            if (mobileNavOpen) {
-                mobileNavOpen.setAttribute('aria-expanded', 'false');
-            }
+            syncMobileNavBurger(false);
         }
 
-        if (mobileNavOpen && mobileNavClose && sidebarBackdrop) {
-            mobileNavOpen.addEventListener('click', openMobileSidebar);
-            mobileNavClose.addEventListener('click', closeMobileSidebar);
+        if (mobileNavBurger && sidebarBackdrop) {
+            mobileNavBurger.addEventListener('click', toggleMobileSidebar);
             sidebarBackdrop.addEventListener('click', closeMobileSidebar);
             document.querySelectorAll('.sidebar-footer a').forEach((a) => {
                 a.addEventListener('click', () => {
