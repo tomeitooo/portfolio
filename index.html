@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="index, follow">
+
+    <title>Tomeito - Portfolio</title>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Noto+Sans+JP:wght@300;400;500&family=Zen+Old+Mincho:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="Zen_Old_Mincho/zenoldmincho.css">
+    
+    <style>
+        /* =========================================
+           基本カラー設定
+           ここでサイト全体の色味を変更できます
+           ========================================= */
+        :root {
+            --bg-color: #111111;       /* 背景色 */
+            --text-main: #ffffff;      /* メインテキスト色 */
+            --text-sub: #888888;       /* サブテキスト色 */
+            --accent-color: #333333;   /* 区切り線などのアクセント色 */
+        }
+
+        /* 修正箇所：スマホでの横幅はみ出し防止のためのボックスサイズ一括指定 */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Zen Old Mincho', 'Noto Sans JP', serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            line-height: 1.8;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        a:hover {
+            color: var(--text-sub);
+        }
+
+        /* =========================================
+           レイアウト
+           ========================================= */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        @media (min-width: 768px) {
+            .sidebar-backdrop {
+                display: none !important;
+            }
+
+            .layout-wrapper {
+                display: flex;
+                min-height: 100vh;
+            }
+
+            .sidebar {
+                width: 38%;
+                position: fixed;
+                top: 0;
+                left: 0;
+                height: 100vh;
+                padding: 2.5rem 1.75rem;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                border-right: 1px solid var(--accent-color);
+                z-index: 10;
+                opacity: 0;
+            }
+
+            .main-content {
+                margin-left: 38%;
+                width: 62%;
+                padding: 2.5rem 1.75rem;
+            }
+        }
+
+        @media (min-width: 1200px) {
+            .sidebar {
+                width: 35%;
+                padding: 4rem;
+            }
+
+            .main-content {
+                margin-left: 35%;
+                width: 65%;
+                padding: 4rem;
+            }
+        }
+
+        @media (min-width: 768px) and (max-width: 1199px) {
+            .site-title {
+                font-size: 2.1rem;
+            }
+
+            .site-role {
+                font-size: 0.8125rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .site-bio {
+                font-size: 0.9375rem;
+                max-width: 34ch;
+            }
+
+            .work-image-container {
+                height: 300px;
+            }
+
+            .work-title {
+                font-size: 1.1rem;
+            }
+
+            .work-cat {
+                font-size: 0.8125rem;
+            }
+        }
+
+        .mobile-nav-open,
+        .mobile-nav-close {
+            display: none;
+        }
+
+        @media (max-width: 767px) {
+            .layout-wrapper {
+                display: block;
+                min-height: 100vh;
+            }
+
+            .sidebar-backdrop {
+                position: fixed;
+                inset: 0;
+                z-index: 210;
+                background-color: rgba(0, 0, 0, 0.55);
+                opacity: 0;
+                visibility: hidden;
+                transition: opacity 0.32s ease, visibility 0.32s ease;
+                pointer-events: none;
+            }
+
+            .layout-wrapper.mobile-sidebar-open .sidebar-backdrop {
+                opacity: 1;
+                visibility: visible;
+                pointer-events: auto;
+            }
+
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                max-height: 100dvh;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+                padding: 3rem 1.5rem 2rem;
+                border-right: none;
+                border-bottom: none;
+                z-index: 220;
+                opacity: 1 !important;
+                transform: translateX(-100%) !important;
+                transition: transform 0.38s cubic-bezier(0.22, 1, 0.36, 1) !important;
+            }
+
+            .layout-wrapper.mobile-sidebar-open .sidebar {
+                transform: translateX(0) !important;
+            }
+
+            .main-content {
+                width: 100%;
+                margin: 0;
+                padding: 3rem 1.5rem;
+                min-height: 100vh;
+            }
+
+            .sidebar-footer {
+                margin-top: 3rem;
+            }
+
+            .mobile-nav-open {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                position: fixed;
+                bottom: 1.25rem;
+                right: 1.25rem;
+                z-index: 100;
+                padding: 0.65rem 1.1rem;
+                font-family: 'Zen Old Mincho', 'Noto Sans JP', serif;
+                font-size: 0.9rem;
+                color: var(--text-main);
+                background-color: #222;
+                border: 1px solid var(--accent-color);
+                cursor: pointer;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45);
+            }
+
+            .mobile-nav-open:focus {
+                outline: 2px solid #666;
+                outline-offset: 2px;
+            }
+
+            .mobile-nav-close {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                position: sticky;
+                top: 0;
+                z-index: 2;
+                width: calc(100% + 3rem);
+                max-width: 100vw;
+                margin: -1rem -1.5rem 1.25rem;
+                padding: 0.75rem 1rem;
+                font-family: 'Zen Old Mincho', 'Noto Sans JP', serif;
+                font-size: 0.88rem;
+                color: var(--text-sub);
+                background-color: rgba(17, 17, 17, 0.92);
+                border: none;
+                border-bottom: 1px solid var(--accent-color);
+                cursor: pointer;
+                text-align: center;
+            }
+
+            .mobile-nav-close:hover {
+                color: var(--text-main);
+            }
+        }
+
+        /* =========================================
+           タイポグラフィ
+           ========================================= */
+        .site-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: -0.05em;
+            margin: 0 0 1rem 0;
+            line-height: 1.1;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            text-align: start;
+        }
+
+        .site-title-ja,
+        .site-title-en {
+            display: block;
+            margin: 0;
+            padding: 0;
+            text-indent: 0;
+            letter-spacing: inherit;
+            font-family: inherit;
+        }
+
+        .site-title-en {
+            font-size: 0.58em;
+            font-weight: 600;
+            margin-top: 0.12em;
+        }
+
+        .site-role {
+            font-size: 0.875rem;
+            color: var(--text-sub);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 2rem;
+            display: block;
+        }
+
+        .site-bio {
+            font-size: 1rem;
+            color: #cccccc;
+            max-width: 400px;
+        }
+
+        /* =========================================
+           作品リスト
+           ========================================= */
+        .work-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .work-item {
+            margin-bottom: 4rem;
+            opacity: 0;
+            transform: translateY(30px);
+            cursor: pointer;
+            outline: none; /* フォーカス時のデフォルト枠線を消す */
+        }
+        
+        /* キーボード操作時のフォーカス表示 */
+        .work-item:focus .work-img {
+            filter: brightness(1.2);
+            transform: scale(1.02);
+        }
+
+        .work-image-container {
+            width: 100%;
+            height: 400px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+            background-color: #222;
+            position: relative;
+        }
+
+        .work-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.7s cubic-bezier(0.2, 1, 0.3, 1), filter 0.5s ease;
+            filter: brightness(0.9);
+        }
+
+        .work-item:hover .work-img {
+            transform: scale(1.05);
+            filter: brightness(1.1);
+        }
+
+        .work-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            border-bottom: 1px solid var(--accent-color);
+            padding-bottom: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .work-title {
+            font-size: 1.25rem;
+            font-weight: 500;
+        }
+
+        .work-cat {
+            font-size: 0.875rem;
+            color: var(--text-sub);
+        }
+
+        /* =========================================
+           モーダル
+           ========================================= */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            /* box-sizing: border-box; は全体設定に移動済み */
+        }
+
+        .modal-content {
+            width: 100%;
+            max-width: 1000px;
+            height: 90vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .modal-image-wrapper {
+            flex: 1;
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-img {
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+            object-fit: contain; 
+            opacity: 0;
+            transform: scale(1.1);
+        }
+
+        .modal-details {
+            margin-top: 1.5rem;
+            color: #fff;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .modal-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin: 0;
+            /* 修正箇所：改行時の行間を調整 */
+            line-height: 1.2;
+        }
+        
+        .modal-meta {
+            color: var(--text-sub);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        .modal-desc {
+            font-size: 0.95rem;
+            color: #d0d0d0;
+            margin: 1rem 0 0;
+            line-height: 1.7;
+        }
+
+        .modal-desc a {
+            color: var(--text-main);
+            text-decoration: underline;
+            text-underline-offset: 0.2em;
+            word-break: break-all;
+        }
+
+        .modal-desc a:hover {
+            color: var(--text-sub);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 2rem;
+            cursor: pointer;
+            z-index: 1001;
+            mix-blend-mode: difference;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .close-btn:hover {
+            opacity: 0.7;
+        }
+
+        .nav-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .nav-item {
+            margin-bottom: 0.5rem;
+        }
+        .nav-item a {
+            font-size: 0.875rem;
+            color: var(--text-sub);
+        }
+        .nav-item a:hover {
+            color: var(--text-main);
+            padding-left: 5px;
+        }
+
+        .sidebar-footer .nav-item {
+            opacity: 0;
+        }
+
+        .sidebar-credit {
+            font-size: 0.75rem;
+            color: #444;
+            margin: 2rem 0 0;
+            opacity: 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="layout-wrapper" id="layout-wrapper">
+    <div class="sidebar-backdrop" id="sidebar-backdrop" aria-hidden="true"></div>
+    <aside class="sidebar" id="sidebar">
+        <button type="button" class="mobile-nav-close" id="mobile-nav-close" aria-label="メニューを閉じる">← 閉じる</button>
+        <div class="sidebar-header">
+            <span id="user-role" class="site-role"></span>
+            <h1 id="user-name" class="site-title"></h1>
+            <p id="user-bio" class="site-bio"></p>
+        </div>
+        
+        <div class="sidebar-footer">
+            <ul id="link-list" class="nav-list"></ul>
+            <p class="sidebar-credit">
+                &copy; <span id="year"></span> <span id="site-credit"></span>
+            </p>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <button type="button" class="mobile-nav-open" id="mobile-nav-open" aria-controls="sidebar" aria-expanded="false">メニュー</button>
+        <ul id="work-list" class="work-list"></ul>
+    </main>
+</div>
+
+<div class="modal-overlay" id="modal">
+    <button class="close-btn" id="modal-close" aria-label="閉じる">×</button>
+    <div class="modal-content">
+        <div class="modal-image-wrapper">
+            <img src="" alt="" class="modal-img" id="modal-img">
+        </div>
+        <div class="modal-details">
+            <h2 class="modal-title" id="modal-title"></h2>
+            <p class="modal-meta" id="modal-category"></p>
+            <p class="modal-desc" id="modal-desc">
+                </p>
+        </div>
+    </div>
+</div>
+
+<script src="works-config.js"></script>
+<script>
+    /* =================================================================
+       【設定エリア】
+       ここでポートフォリオの表示内容を変更します。
+       作品リストは works-config.js（MONO_WORKS）を編集してください。
+       ================================================================= */
+    const monoConfig = {
+        // お名前（改行したい場所に <br> を入れてください）
+        name: "<span class=\"site-title-ja\">とめいと</span><span class=\"site-title-en\">Tomeito</span>",
+        
+        // 肩書き
+        role: "Independent developer",
+        
+        // 自己紹介文（\n で改行されます）
+        bio: "黒と白の間にある、無限の階調。\n光と影を用いたビジュアル表現。",
+
+        // 作品リスト → works-config.js の MONO_WORKS
+        works: typeof MONO_WORKS !== "undefined" ? MONO_WORKS : [],
+        
+        // サイドバーのリンク設定
+        links: [
+            { label: "Home", url: "index.html" },
+            { label: "About", url: "about.html" },
+            { label: "X (Twitter)", url: "https://x.com/tomeit__o" },
+            { label: "GitHub", url: "https://github.com/tomeitooo" },
+            { label: "Contact", url: "mailto:info@tomeit-o.com" }
+        ],
+
+        // フッターのクレジット
+        credit: "Tomeito"
+    };
+
+    /* =================================================================
+       【システム処理エリア】
+       ここから下はプログラムの動作に関わる部分です。
+       カスタマイズ不要の場合は変更しないでください。
+       ================================================================= */
+
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- 1. コンテンツ生成 ---
+        document.getElementById('user-name').innerHTML = monoConfig.name; // brタグ許可のためinnerHTML
+        document.getElementById('user-role').textContent = monoConfig.role;
+        document.getElementById('user-bio').innerHTML = monoConfig.bio.replace(/\n/g, '<br>');
+        document.getElementById('year').textContent = new Date().getFullYear();
+        document.getElementById('site-credit').textContent = monoConfig.credit;
+
+        const linkList = document.getElementById('link-list');
+        monoConfig.links.forEach(link => {
+            const li = document.createElement('li');
+            li.className = 'nav-item';
+            const isExternal = /^(https?:)?\/\//.test(link.url) || link.url.startsWith('mailto:');
+            const targetAttrs = isExternal ? ' target="_blank" rel="noopener noreferrer"' : '';
+            li.innerHTML = `<a href="${link.url}"${targetAttrs}>→ ${link.label}</a>`;
+            linkList.appendChild(li);
+        });
+
+        // --- 作品リスト生成（works-config.js の MONO_WORKS のみ。自動連番は行いません）
+        const workList = document.getElementById('work-list');
+        const allWorks = monoConfig.works.slice();
+
+        allWorks.forEach((work, index) => {
+            const li = document.createElement('li');
+            li.className = 'work-item';
+            li.dataset.index = index;
+            li.setAttribute('tabindex', '0');
+            li.setAttribute('role', 'button');
+            li.setAttribute('aria-label', `${work.title}の詳細を見る`);
+
+            const src = `image/${work.imageFile}`;
+
+            // 画像読み込みエラー時（ファイルが存在しない時）に親要素ごと非表示にする処理を追加
+            // style="display:none" は onerror で即座に消すため
+            li.innerHTML = `
+                <div class="work-image-container">
+                    <img src="${src}" class="work-img" alt="${work.title}" onerror="this.closest('.work-item').remove()">
+                </div>
+                <div class="work-info">
+                    <span class="work-title">${work.title}</span>
+                    <span class="work-cat">${work.category}</span>
+                </div>
+            `;
+            
+            // クリックイベント
+            li.addEventListener('click', (e) => openModal(index, e.currentTarget));
+            
+            // エンターキー操作
+            li.addEventListener('keydown', (e) => {
+                if(e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    openModal(index, e.currentTarget);
+                }
+            });
+
+            workList.appendChild(li);
+        });
+
+        // --- 2. アニメーション設定 (Anime.js) ---
+
+        function playSidebarFooterReveal() {
+            const navItems = document.querySelectorAll('.sidebar-footer .nav-item');
+            const staggerMs = 85;
+            anime({
+                targets: navItems,
+                opacity: [0, 1],
+                translateX: [-12, 0],
+                easing: 'easeOutCubic',
+                duration: 580,
+                delay: anime.stagger(staggerMs, { start: 0 })
+            });
+            anime({
+                targets: '.sidebar-credit',
+                opacity: [0, 1],
+                translateX: [-12, 0],
+                easing: 'easeOutCubic',
+                duration: 580,
+                delay: staggerMs * navItems.length + 40
+            });
+        }
+
+        const layoutWrapper = document.getElementById('layout-wrapper');
+        const sidebarBackdrop = document.getElementById('sidebar-backdrop');
+        const mobileNavOpen = document.getElementById('mobile-nav-open');
+        const mobileNavClose = document.getElementById('mobile-nav-close');
+        const mqMobileNav = window.matchMedia('(max-width: 767px)');
+        let mobileSidebarFooterRevealDone = false;
+
+        function isMobileNavLayout() {
+            return mqMobileNav.matches;
+        }
+
+        function openMobileSidebar() {
+            if (!layoutWrapper || !isMobileNavLayout()) {
+                return;
+            }
+            layoutWrapper.classList.add('mobile-sidebar-open');
+            document.body.style.overflow = 'hidden';
+            if (mobileNavOpen) {
+                mobileNavOpen.setAttribute('aria-expanded', 'true');
+            }
+            if (!mobileSidebarFooterRevealDone) {
+                mobileSidebarFooterRevealDone = true;
+                playSidebarFooterReveal();
+            }
+        }
+
+        function closeMobileSidebar() {
+            if (!layoutWrapper) {
+                return;
+            }
+            layoutWrapper.classList.remove('mobile-sidebar-open');
+            document.body.style.overflow = '';
+            if (mobileNavOpen) {
+                mobileNavOpen.setAttribute('aria-expanded', 'false');
+            }
+        }
+
+        if (mobileNavOpen && mobileNavClose && sidebarBackdrop) {
+            mobileNavOpen.addEventListener('click', openMobileSidebar);
+            mobileNavClose.addEventListener('click', closeMobileSidebar);
+            sidebarBackdrop.addEventListener('click', closeMobileSidebar);
+            document.querySelectorAll('.sidebar-footer a').forEach((a) => {
+                a.addEventListener('click', () => {
+                    if (layoutWrapper && layoutWrapper.classList.contains('mobile-sidebar-open') && isMobileNavLayout()) {
+                        closeMobileSidebar();
+                    }
+                });
+            });
+        }
+
+        mqMobileNav.addEventListener('change', () => {
+            if (!isMobileNavLayout()) {
+                closeMobileSidebar();
+                anime.remove('.sidebar');
+            }
+        });
+
+        // サイドバー：デスクトップは従来アニメ／モバイルはメインのみ表示しメニューで別パネル
+        if (isMobileNavLayout()) {
+            anime.set('.sidebar', { opacity: 1 });
+            anime.set('.sidebar-footer .nav-item', { opacity: 0, translateX: -12 });
+            anime.set('.sidebar-credit', { opacity: 0, translateX: -12 });
+        } else {
+            anime({
+                targets: '.sidebar',
+                translateX: [-30, 0],
+                opacity: [0, 1],
+                easing: 'easeOutExpo',
+                duration: 1500,
+                delay: 200,
+                complete: playSidebarFooterReveal
+            });
+        }
+
+        // スクロール連動アニメーション
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px 0px -10% 0px',
+            threshold: 0
+        };
+
+        const observer = new IntersectionObserver((entries, obs) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // 画像がない(onerrorで消えた)要素はターゲットにしない
+                    if (entry.target.parentElement) { 
+                        anime({
+                            targets: entry.target,
+                            opacity: [0, 1],
+                            translateY: [30, 0],
+                            easing: 'easeOutCubic',
+                            duration: 800
+                        });
+                        obs.unobserve(entry.target);
+                    }
+                }
+            });
+        }, observerOptions);
+
+        // 少し遅延させてから監視を開始（DOM追加とonerror処理の競合回避）
+        setTimeout(() => {
+            document.querySelectorAll('.work-item').forEach(item => {
+                observer.observe(item);
+            });
+        }, 100);
+
+        // --- 3. モーダル制御 ---
+        const modal = document.getElementById('modal');
+        const modalImg = document.getElementById('modal-img');
+        const modalTitle = document.getElementById('modal-title');
+        const modalCat = document.getElementById('modal-category');
+        const modalDesc = document.getElementById('modal-desc');
+        const closeBtn = document.getElementById('modal-close');
+
+        function openModal(index, targetElement) {
+            const work = allWorks[index]; // allWorksを参照するように変更
+            const src = `image/${work.imageFile}`;
+            
+            modalImg.src = src;
+            modalImg.alt = work.title;
+            modalTitle.textContent = work.title;
+            modalCat.textContent = work.category;
+
+            modalDesc.textContent = '';
+            if (work.desc) {
+                modalDesc.appendChild(document.createTextNode(work.desc));
+            }
+            if (work.url) {
+                if (work.desc) {
+                    modalDesc.appendChild(document.createElement('br'));
+                    modalDesc.appendChild(document.createElement('br'));
+                }
+                const link = document.createElement('a');
+                link.href = work.url;
+                link.target = '_blank';
+                link.rel = 'noopener noreferrer';
+                link.textContent = work.url;
+                modalDesc.appendChild(link);
+            }
+
+            // クリック時のバウンドエフェクト
+            anime({
+                targets: targetElement,
+                scale: [1, 0.95, 1],
+                duration: 300,
+                easing: 'easeInOutQuad',
+                complete: () => {
+                    modal.style.visibility = 'visible';
+                    closeBtn.focus(); 
+
+                    const tl = anime.timeline({
+                        easing: 'easeOutExpo',
+                        // durationは個別に設定するため削除、またはデフォルトとして利用
+                    });
+
+                    // 修正箇所：モーダルアニメーションのテンポ調整
+                    tl
+                    .add({
+                        targets: modal,
+                        opacity: [0, 1],
+                        duration: 300, // 背景の出現を少し早く
+                        easing: 'linear'
+                    })
+                    .add({
+                        targets: modalImg,
+                        opacity: [0, 1],
+                        scale: [1.1, 1],
+                        duration: 600, // 画像出現時間
+                        offset: '-=150' // 背景と少し被らせる
+                    })
+                    .add({
+                        targets: '.modal-details',
+                        opacity: [0, 1],
+                        translateY: [30, 0],
+                        duration: 500, // テキスト出現時間
+                        offset: '-=500' // 画像出現開始の直後からテキストも出し始める（スナッピーにする）
+                    })
+                    .add({
+                        targets: closeBtn,
+                        opacity: [0, 1],
+                        duration: 400,
+                        offset: '-=400'
+                    });
+                }
+            });
+        }
+
+        function closeModal() {
+            anime({
+                targets: modal,
+                opacity: 0,
+                duration: 300,
+                easing: 'easeInQuad',
+                complete: () => {
+                    modal.style.visibility = 'hidden';
+                    modalImg.src = '';
+                    anime.set(modalImg, { opacity: 0, scale: 1.1 });
+                    anime.set('.modal-details', { opacity: 0, translateY: 30 });
+                    anime.set(closeBtn, { opacity: 0 });
+                }
+            });
+        }
+
+        closeBtn.addEventListener('click', closeModal);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key !== 'Escape') {
+                return;
+            }
+            if (modal.style.visibility === 'visible') {
+                closeModal();
+                return;
+            }
+            if (layoutWrapper && layoutWrapper.classList.contains('mobile-sidebar-open') && isMobileNavLayout()) {
+                closeMobileSidebar();
+            }
+        });
+    });
+</script>
+</body>
+</html>

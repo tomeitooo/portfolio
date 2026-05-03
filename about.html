@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="MONOトーンの世界観で構成したABOUTページです。">
+    <title>About - MONO</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Noto+Sans+JP:wght@300;400;500&family=Zen+Old+Mincho:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="Zen_Old_Mincho/zenoldmincho.css">
+    <style>
+        :root {
+            --bg-color: #111111;
+            --text-main: #ffffff;
+            --text-sub: #888888;
+            --accent-color: #333333;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Zen Old Mincho", "Noto Sans JP", serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            line-height: 1.8;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: var(--text-sub);
+        }
+
+        .layout-wrapper {
+            min-height: 100vh;
+        }
+
+        .section-block {
+            border-bottom: 1px solid var(--accent-color);
+            padding: 0 0 2.2rem;
+            margin-bottom: 2.2rem;
+        }
+
+        .section-title {
+            margin: 0 0 1.2rem;
+            font-size: 0.92rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-sub);
+            font-family: "Inter", sans-serif;
+            font-weight: 400;
+        }
+
+        .site-title {
+            font-size: 2.3rem;
+            font-weight: 700;
+            letter-spacing: -0.04em;
+            margin: 0 0 0.8rem;
+            line-height: 1.2;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            text-align: start;
+        }
+
+        .site-title-ja,
+        .site-title-en {
+            display: block;
+            margin: 0;
+            padding: 0;
+            text-indent: 0;
+            letter-spacing: inherit;
+            font-family: inherit;
+        }
+
+        .site-title-en {
+            font-size: 0.58em;
+            font-weight: 600;
+            margin-top: 0.12em;
+        }
+
+        .site-role {
+            font-family: "Inter", sans-serif;
+            font-size: 0.82rem;
+            color: var(--text-sub);
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .site-bio {
+            font-size: 0.98rem;
+            color: #d2d2d2;
+            max-width: 40ch;
+        }
+
+        .nav-list,
+        .tag-list,
+        .timeline-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .nav-item {
+            margin-bottom: 0.45rem;
+        }
+
+        .nav-item a {
+            font-size: 0.86rem;
+            color: var(--text-sub);
+            font-family: "Inter", sans-serif;
+        }
+
+        .nav-item.active a {
+            color: var(--text-main);
+        }
+
+        /* サイドバー：Home と同じホバー（白・わずかに右へ）※グローバル a:hover より優先。フォントは Zen Old Mincho */
+        .sidebar-footer .nav-item a {
+            font-family: "Zen Old Mincho", "Noto Sans JP", serif;
+            font-size: 0.875rem;
+            color: var(--text-sub);
+            display: inline-block;
+            padding-left: 0;
+            transition: color 0.3s ease, padding-left 0.3s ease;
+        }
+
+        .sidebar-footer .nav-item a:hover {
+            color: var(--text-main);
+            padding-left: 5px;
+        }
+
+        .sidebar-footer .nav-item.active a:hover {
+            color: var(--text-main);
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 190px 1fr;
+            gap: 1.6rem;
+            align-items: start;
+        }
+
+        .avatar {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            border: 1px solid var(--accent-color);
+            display: grid;
+            place-items: center;
+            padding: 1.25rem;
+            box-sizing: border-box;
+        }
+
+        .avatar-logo {
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            max-height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+
+        .profile-copy p {
+            margin: 0 0 1rem;
+            color: #d0d0d0;
+            font-size: 0.95rem;
+        }
+
+        .label {
+            display: inline-block;
+            border: 1px solid var(--accent-color);
+            color: #c5c5c5;
+            font-family: "Inter", sans-serif;
+            font-size: 0.74rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            padding: 0.32rem 0.6rem;
+            margin: 0 0.45rem 0.55rem 0;
+        }
+
+        .timeline-item {
+            display: grid;
+            grid-template-columns: 110px 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .timeline-year {
+            color: var(--text-sub);
+            font-family: "Inter", sans-serif;
+            font-size: 0.82rem;
+        }
+
+        .timeline-text {
+            color: #d4d4d4;
+            font-size: 0.93rem;
+        }
+
+        .works-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1rem;
+        }
+
+        .work-card {
+            border: 1px solid var(--accent-color);
+            padding: 1rem;
+            min-height: 160px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .work-card h3 {
+            margin: 0 0 0.5rem;
+            font-size: 1.05rem;
+            font-weight: 500;
+        }
+
+        .work-card p {
+            margin: 0;
+            color: var(--text-sub);
+            font-size: 0.84rem;
+            font-family: "Inter", sans-serif;
+        }
+
+        .logo-showcase-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1rem;
+        }
+
+        .logo-showcase-card {
+            margin: 0;
+            border: 1px solid var(--accent-color);
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-frame {
+            flex: 1;
+            min-height: 140px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.25rem;
+            background-color: #161616;
+            border: 1px solid var(--accent-color);
+        }
+
+        .logo-frame--interactive {
+            cursor: zoom-in;
+            transition: border-color 0.25s ease, background-color 0.25s ease;
+        }
+
+        .logo-frame--interactive:hover {
+            border-color: #555;
+            background-color: #1c1c1c;
+        }
+
+        .logo-frame--interactive:focus {
+            outline: none;
+        }
+
+        .logo-frame--interactive:focus-visible {
+            outline: 2px solid #888;
+            outline-offset: 2px;
+        }
+
+        .logo-lightbox {
+            position: fixed;
+            inset: 0;
+            z-index: 3000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            background-color: rgba(0, 0, 0, 0.94);
+            cursor: zoom-out;
+        }
+
+        .logo-lightbox[hidden] {
+            display: none;
+        }
+
+        .logo-lightbox-close {
+            position: absolute;
+            top: 1.25rem;
+            right: 1.25rem;
+            width: 2.75rem;
+            height: 2.75rem;
+            border: none;
+            background: none;
+            color: #fff;
+            font-size: 2rem;
+            line-height: 1;
+            cursor: pointer;
+            z-index: 3001;
+            opacity: 0.85;
+            transition: opacity 0.2s ease;
+        }
+
+        .logo-lightbox-close:hover {
+            opacity: 1;
+        }
+
+        .logo-lightbox-img {
+            max-width: min(92vw, 900px);
+            max-height: min(82vh, 640px);
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            cursor: default;
+        }
+
+        .logo-frame img {
+            max-width: 100%;
+            max-height: 120px;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+        }
+
+        .logo-showcase-card figcaption {
+            margin: 0.85rem 0 0;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.45rem 0.65rem;
+            font-family: "Inter", sans-serif;
+            font-size: 0.82rem;
+            color: var(--text-sub);
+        }
+
+        .logo-chip {
+            width: 14px;
+            height: 14px;
+            border-radius: 2px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            flex-shrink: 0;
+        }
+
+        .logo-label {
+            color: #d0d0d0;
+            letter-spacing: 0.04em;
+        }
+
+        .logo-hex {
+            font-family: "Inter", sans-serif;
+            font-size: 0.8rem;
+            color: var(--text-sub);
+            letter-spacing: 0.03em;
+        }
+
+        .logo-note {
+            margin: 1.5rem 0 0;
+            padding: 0;
+            font-size: 0.93rem;
+            line-height: 1.85;
+            color: #c8c8c8;
+            max-width: 52ch;
+        }
+
+        .contact-box {
+            border: 1px solid var(--accent-color);
+            padding: 1.2rem;
+        }
+
+        .contact-box p {
+            margin: 0 0 0.8rem;
+            color: #d4d4d4;
+            font-size: 0.94rem;
+        }
+
+        .contact-link {
+            font-family: "Zen Old Mincho", "Noto Sans JP", serif;
+            font-size: 0.85rem;
+            color: var(--text-sub);
+        }
+
+        .contact-sns {
+            margin: 1.1rem 0 0;
+            padding: 0;
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem 1.25rem;
+        }
+
+        .contact-sns a {
+            font-family: "Zen Old Mincho", "Noto Sans JP", serif;
+            font-size: 0.85rem;
+            color: var(--text-sub);
+        }
+
+        .contact-sns a:hover {
+            color: var(--text-main);
+        }
+
+        .sidebar-footer .nav-item {
+            opacity: 0;
+        }
+
+        .sidebar-credit {
+            font-size: 0.72rem;
+            color: #444;
+            margin: 2rem 0 0;
+            font-family: "Zen Old Mincho", "Noto Sans JP", serif;
+            opacity: 0;
+            display: inline-block;
+            padding-left: 0;
+            cursor: default;
+            transition: color 0.3s ease, padding-left 0.3s ease;
+        }
+
+        .sidebar-credit:hover {
+            color: var(--text-main);
+            padding-left: 5px;
+        }
+
+        .mobile-nav-open,
+        .mobile-nav-close {
+            display: none;
+        }
+
+        @media (min-width: 768px) {
+            .sidebar-backdrop {
+                display: none !important;
+            }
+
+            .layout-wrapper {
+                display: flex;
+                min-height: 100vh;
+            }
+
+            .sidebar {
+                width: 38%;
+                position: fixed;
+                top: 0;
+                left: 0;
+                height: 100vh;
+                padding: 2.5rem 1.75rem;
+                border-right: 1px solid var(--accent-color);
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                z-index: 10;
+                opacity: 0;
+            }
+
+            .main-content {
+                margin-left: 38%;
+                width: 62%;
+                padding: 2.5rem 1.75rem;
+            }
+        }
+
+        @media (min-width: 1200px) {
+            .sidebar {
+                width: 35%;
+                padding: 4rem;
+            }
+
+            .main-content {
+                margin-left: 35%;
+                width: 65%;
+                padding: 4rem;
+            }
+        }
+
+        @media (min-width: 768px) and (max-width: 1199px) {
+            .site-title {
+                font-size: 2.05rem;
+            }
+
+            .site-role {
+                font-size: 0.78rem;
+                margin-bottom: 1.25rem;
+            }
+
+            .site-bio {
+                font-size: 0.93rem;
+                max-width: 36ch;
+            }
+
+            .section-block {
+                padding-bottom: 1.85rem;
+                margin-bottom: 1.85rem;
+            }
+
+            .section-title {
+                font-size: 0.88rem;
+                margin-bottom: 1rem;
+            }
+
+            .profile-grid {
+                grid-template-columns: min(168px, 42vw) 1fr;
+                gap: 1.35rem;
+            }
+
+            .timeline-item {
+                grid-template-columns: 100px 1fr;
+                gap: 0.85rem;
+            }
+
+            .work-card {
+                min-height: 140px;
+                padding: 0.85rem;
+            }
+
+            .work-card h3 {
+                font-size: 1rem;
+            }
+
+            .contact-box {
+                padding: 1rem;
+            }
+        }
+
+        @media (max-width: 767px) {
+            .layout-wrapper {
+                display: block;
+                min-height: 100vh;
+            }
+
+            .sidebar-backdrop {
+                position: fixed;
+                inset: 0;
+                z-index: 210;
+                background-color: rgba(0, 0, 0, 0.55);
+                opacity: 0;
+                visibility: hidden;
+                transition: opacity 0.32s ease, visibility 0.32s ease;
+                pointer-events: none;
+            }
+
+            .layout-wrapper.mobile-sidebar-open .sidebar-backdrop {
+                opacity: 1;
+                visibility: visible;
+                pointer-events: auto;
+            }
+
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                max-height: 100dvh;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+                padding: 2.6rem 1.4rem 2rem;
+                border-right: none;
+                border-bottom: none;
+                z-index: 220;
+                opacity: 1 !important;
+                transform: translateX(-100%) !important;
+                transition: transform 0.38s cubic-bezier(0.22, 1, 0.36, 1) !important;
+            }
+
+            .layout-wrapper.mobile-sidebar-open .sidebar {
+                transform: translateX(0) !important;
+            }
+
+            .main-content {
+                width: 100%;
+                margin: 0;
+                padding: 2.6rem 1.4rem;
+                min-height: 100vh;
+            }
+
+            .sidebar-footer {
+                margin-top: 3rem;
+            }
+
+            .profile-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .mobile-nav-open {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                position: fixed;
+                bottom: 1.25rem;
+                right: 1.25rem;
+                z-index: 100;
+                padding: 0.65rem 1.1rem;
+                font-family: "Zen Old Mincho", "Noto Sans JP", serif;
+                font-size: 0.9rem;
+                color: var(--text-main);
+                background-color: #1a1a1a;
+                border: 1px solid var(--accent-color);
+                cursor: pointer;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45);
+            }
+
+            .mobile-nav-open:focus {
+                outline: 2px solid #666;
+                outline-offset: 2px;
+            }
+
+            .mobile-nav-close {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                position: sticky;
+                top: 0;
+                z-index: 2;
+                width: 100%;
+                margin: 0 0 1.25rem;
+                padding: 0.75rem 1rem;
+                font-family: "Zen Old Mincho", "Noto Sans JP", serif;
+                font-size: 0.88rem;
+                color: var(--text-sub);
+                background-color: rgba(17, 17, 17, 0.92);
+                border: none;
+                border-bottom: 1px solid var(--accent-color);
+                cursor: pointer;
+            }
+
+            .mobile-nav-close:hover {
+                color: var(--text-main);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .works-grid,
+            .logo-showcase-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .timeline-item {
+                grid-template-columns: 1fr;
+                gap: 0.25rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="layout-wrapper" id="layout-wrapper">
+        <div class="sidebar-backdrop" id="sidebar-backdrop" aria-hidden="true"></div>
+        <aside class="sidebar" id="sidebar">
+            <button type="button" class="mobile-nav-close" id="mobile-nav-close" aria-label="メニューを閉じる">← 閉じる</button>
+            <div class="sidebar-header">
+                <span class="site-role">About Page</span>
+                <h1 class="site-title"><span class="site-title-ja">とめいと</span><span class="site-title-en">Tomeito</span></h1>
+                <p class="site-bio">個人開発を通して、世の中に良いプロダクトを発信するため日々努力しています。</p>
+            </div>
+            <div class="sidebar-footer">
+                <ul class="nav-list">
+                    <li class="nav-item"><a href="index.html">→ Home</a></li>
+                    <li class="nav-item active"><a href="about.html">→ About</a></li>
+                    <li class="nav-item"><a href="https://x.com/tomeit__o" target="_blank" rel="noopener noreferrer">→ X (Twitter)</a></li>
+                    <li class="nav-item"><a href="https://github.com/tomeitooo" target="_blank" rel="noopener noreferrer">→ GitHub</a></li>
+                    <li class="nav-item"><a href="mailto:info@tomeit-o.com">→ Contact</a></li>
+                </ul>
+                <p class="sidebar-credit">&copy; 2026 Tomeito</p>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <button type="button" class="mobile-nav-open" id="mobile-nav-open" aria-controls="sidebar" aria-expanded="false">メニュー</button>
+            <section class="section-block">
+                <h2 class="section-title">Profile</h2>
+                <div class="profile-grid">
+                    <div class="avatar">
+                        <img class="avatar-logo" src="image/tomeit-o_gray_logo.svg" alt="とめいと ロゴ">
+                    </div>
+                    <div class="profile-copy">
+                        <p>個人開発を通して、世の中に良いプロダクトを発信するため日々努力しています。</p>
+                        <p>ユーザーが使用しやすいUI,UXデザインが得意です。</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section-block">
+                <h2 class="section-title">Specialties</h2>
+                <ul class="tag-list">
+                    <li class="label">Discord Bot</li>
+                    <li class="label">Web Design</li>
+                    <li class="label">Server Setting and Management, Maintenance</li>
+                </ul>
+            </section>
+
+            <section class="section-block">
+                <h2 class="section-title">Timeline</h2>
+                <ul class="timeline-list">
+                    <li class="timeline-item">
+                        <span class="timeline-year">2026 - Now</span>
+                        <span class="timeline-text">Webデザインや自宅のサーバー保守管理、ゲームサーバー運営などを行う。</span>
+                    </li>
+                    <li class="timeline-item">
+                        <span class="timeline-year">2024 - 2025</span>
+                        <span class="timeline-text">簡単なDiscord Botのコーディングを開始。</span>
+                    </li>
+                </ul>
+            </section>
+
+            <section class="section-block" id="about-works-section">
+                <h2 class="section-title">Selected Works</h2>
+                <div id="about-selected-works" class="works-grid"></div>
+            </section>
+
+            <section class="section-block">
+                <h2 class="section-title">Logo</h2>
+                <div class="logo-showcase-grid">
+                    <figure class="logo-showcase-card">
+                        <div class="logo-frame logo-frame--interactive" tabindex="0" role="button" aria-label="グレーのロゴを拡大表示">
+                            <img src="image/tomeit-o_gray_logo.svg" alt="Tomeit-o.com ロゴ（グレー）">
+                        </div>
+                        <figcaption>
+                            <span class="logo-chip" style="background-color: #acabaf" title="#acabaf"></span>
+                            <span class="logo-label">Gray</span>
+                            <span class="logo-hex">#acabaf</span>
+                        </figcaption>
+                    </figure>
+                    <figure class="logo-showcase-card">
+                        <div class="logo-frame logo-frame--interactive" tabindex="0" role="button" aria-label="ブルーのロゴを拡大表示">
+                            <img src="image/tomeit-o_blue_logo.svg" alt="Tomeit-o.com ロゴ（ブルー）">
+                        </div>
+                        <figcaption>
+                            <span class="logo-chip" style="background-color: #4a4d5b" title="#4a4d5b"></span>
+                            <span class="logo-label">Blue</span>
+                            <span class="logo-hex">#4a4d5b</span>
+                        </figcaption>
+                    </figure>
+                </div>
+                <p class="logo-note">Tomeit-o.comのロゴは、私たちにとって最も認知度の高い財産です。<br>そのため、ロゴの使用方法に細心の注意を払っています。<br>ロゴをどのように使用するかについては、時間をかけて慎重に検討してください。<br>ロゴの使用を希望される際は、<a class="contact-link" href="mailto:info@tomeit-o.com">info@tomeit-o.com</a>までご連絡ください。</p>
+            </section>
+
+            <section>
+                <h2 class="section-title">Contact</h2>
+                <div class="contact-box">
+                    <p>案件のご相談や制作依頼は、メールまたはSNSのDMからご連絡ください。</p>
+                    <a class="contact-link" href="mailto:info@tomeit-o.com">info@tomeit-o.com</a>
+                    <ul class="contact-sns">
+                        <li><a href="https://x.com/tomeit__o" target="_blank" rel="noopener noreferrer">X (Twitter)</a></li>
+                    </ul>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div id="logo-lightbox" class="logo-lightbox" hidden>
+        <button type="button" class="logo-lightbox-close" id="logo-lightbox-close" aria-label="閉じる">×</button>
+        <img id="logo-lightbox-img" class="logo-lightbox-img" src="" alt="">
+    </div>
+
+    <script src="works-config.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const logoLightbox = document.getElementById("logo-lightbox");
+            const logoLightboxImg = document.getElementById("logo-lightbox-img");
+            const logoLightboxClose = document.getElementById("logo-lightbox-close");
+
+            function openLogoLightbox(src, alt) {
+                if (!logoLightbox || !logoLightboxImg) {
+                    return;
+                }
+                logoLightboxImg.src = src;
+                logoLightboxImg.alt = alt || "";
+                logoLightbox.removeAttribute("hidden");
+                document.body.style.overflow = "hidden";
+                logoLightboxClose.focus();
+            }
+
+            function closeLogoLightbox() {
+                if (!logoLightbox || !logoLightboxImg) {
+                    return;
+                }
+                logoLightbox.setAttribute("hidden", "");
+                logoLightboxImg.removeAttribute("src");
+                logoLightboxImg.alt = "";
+                const lw = document.getElementById("layout-wrapper");
+                if (!lw || !lw.classList.contains("mobile-sidebar-open")) {
+                    document.body.style.overflow = "";
+                }
+            }
+
+            document.querySelectorAll(".logo-showcase-card .logo-frame--interactive").forEach((frame) => {
+                const img = frame.querySelector("img");
+                if (!img) {
+                    return;
+                }
+                frame.addEventListener("click", () => openLogoLightbox(img.getAttribute("src"), img.getAttribute("alt")));
+                frame.addEventListener("keydown", (e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        openLogoLightbox(img.getAttribute("src"), img.getAttribute("alt"));
+                    }
+                });
+            });
+
+            if (logoLightbox) {
+                logoLightbox.addEventListener("click", (e) => {
+                    if (e.target === logoLightbox) {
+                        closeLogoLightbox();
+                    }
+                });
+            }
+            if (logoLightboxClose) {
+                logoLightboxClose.addEventListener("click", (e) => {
+                    e.stopPropagation();
+                    closeLogoLightbox();
+                });
+            }
+
+            const aboutWorksGrid = document.getElementById("about-selected-works");
+            if (aboutWorksGrid && typeof MONO_WORKS !== "undefined") {
+                const picked = MONO_WORKS.filter((w) => w.aboutPick);
+                const list = picked.length ? picked : MONO_WORKS.slice(0, 4);
+                list.forEach((w) => {
+                    const art = document.createElement("article");
+                    art.className = "work-card";
+                    const h3 = document.createElement("h3");
+                    h3.textContent = w.title;
+                    const p = document.createElement("p");
+                    const y = w.year != null && String(w.year).length ? w.year : "—";
+                    p.textContent = `${w.category} / ${y}`;
+                    art.appendChild(h3);
+                    art.appendChild(p);
+                    aboutWorksGrid.appendChild(art);
+                });
+            }
+
+            const sidebar = document.querySelector(".sidebar");
+            const sections = document.querySelectorAll(".main-content section");
+            const workCards = document.querySelectorAll(".work-card");
+            const logoCards = document.querySelectorAll(".logo-showcase-card");
+            const labels = document.querySelectorAll(".label");
+            const timelineItems = document.querySelectorAll(".timeline-item");
+
+            function playSidebarFooterReveal() {
+                const navItems = document.querySelectorAll(".sidebar-footer .nav-item");
+                const staggerMs = 85;
+                anime({
+                    targets: navItems,
+                    opacity: [0, 1],
+                    translateX: [-12, 0],
+                    easing: "easeOutCubic",
+                    duration: 580,
+                    delay: anime.stagger(staggerMs, { start: 0 })
+                });
+                anime({
+                    targets: ".sidebar-credit",
+                    opacity: [0, 1],
+                    translateX: [-12, 0],
+                    easing: "easeOutCubic",
+                    duration: 580,
+                    delay: staggerMs * navItems.length + 40
+                });
+            }
+
+            const layoutWrapper = document.getElementById("layout-wrapper");
+            const sidebarBackdrop = document.getElementById("sidebar-backdrop");
+            const mobileNavOpen = document.getElementById("mobile-nav-open");
+            const mobileNavClose = document.getElementById("mobile-nav-close");
+            const mqMobileNav = window.matchMedia("(max-width: 767px)");
+            let mobileSidebarFooterRevealDone = false;
+
+            function isMobileNavLayout() {
+                return mqMobileNav.matches;
+            }
+
+            function openMobileSidebar() {
+                if (!layoutWrapper || !isMobileNavLayout()) {
+                    return;
+                }
+                layoutWrapper.classList.add("mobile-sidebar-open");
+                document.body.style.overflow = "hidden";
+                if (mobileNavOpen) {
+                    mobileNavOpen.setAttribute("aria-expanded", "true");
+                }
+                if (!mobileSidebarFooterRevealDone) {
+                    mobileSidebarFooterRevealDone = true;
+                    playSidebarFooterReveal();
+                }
+            }
+
+            function closeMobileSidebar() {
+                if (!layoutWrapper) {
+                    return;
+                }
+                layoutWrapper.classList.remove("mobile-sidebar-open");
+                document.body.style.overflow = "";
+                if (mobileNavOpen) {
+                    mobileNavOpen.setAttribute("aria-expanded", "false");
+                }
+            }
+
+            if (mobileNavOpen && mobileNavClose && sidebarBackdrop) {
+                mobileNavOpen.addEventListener("click", openMobileSidebar);
+                mobileNavClose.addEventListener("click", closeMobileSidebar);
+                sidebarBackdrop.addEventListener("click", closeMobileSidebar);
+                document.querySelectorAll(".sidebar-footer a").forEach((a) => {
+                    a.addEventListener("click", () => {
+                        if (layoutWrapper && layoutWrapper.classList.contains("mobile-sidebar-open") && isMobileNavLayout()) {
+                            closeMobileSidebar();
+                        }
+                    });
+                });
+            }
+
+            mqMobileNav.addEventListener("change", () => {
+                if (!isMobileNavLayout()) {
+                    closeMobileSidebar();
+                    anime.remove(".sidebar");
+                }
+            });
+
+            if (isMobileNavLayout()) {
+                anime.set(".sidebar", { opacity: 1 });
+                anime.set(".sidebar-footer .nav-item", { opacity: 0, translateX: -12 });
+                anime.set(".sidebar-credit", { opacity: 0, translateX: -12 });
+            } else {
+                anime({
+                    targets: sidebar,
+                    translateX: [-30, 0],
+                    opacity: [0, 1],
+                    easing: "easeOutExpo",
+                    duration: 1500,
+                    delay: 200,
+                    complete: playSidebarFooterReveal
+                });
+            }
+
+            anime.set(sections, { opacity: 0, translateY: 26 });
+            anime.set(workCards, { opacity: 0, translateY: 20 });
+            anime.set(logoCards, { opacity: 0, translateY: 20 });
+            anime.set(labels, { opacity: 0, translateY: 12 });
+            anime.set(timelineItems, { opacity: 0, translateY: 18 });
+
+            const observer = new IntersectionObserver((entries, obs) => {
+                entries.forEach((entry) => {
+                    if (!entry.isIntersecting) {
+                        return;
+                    }
+
+                    anime({
+                        targets: entry.target,
+                        opacity: [0, 1],
+                        translateY: [26, 0],
+                        easing: "easeOutCubic",
+                        duration: 760
+                    });
+
+                    if (entry.target.querySelector(".work-card")) {
+                        anime({
+                            targets: entry.target.querySelectorAll(".work-card"),
+                            opacity: [0, 1],
+                            translateY: [20, 0],
+                            easing: "easeOutCubic",
+                            duration: 680,
+                            delay: anime.stagger(90, { start: 120 })
+                        });
+                    }
+
+                    if (entry.target.querySelector(".logo-showcase-card")) {
+                        anime({
+                            targets: entry.target.querySelectorAll(".logo-showcase-card"),
+                            opacity: [0, 1],
+                            translateY: [20, 0],
+                            easing: "easeOutCubic",
+                            duration: 680,
+                            delay: anime.stagger(90, { start: 120 })
+                        });
+                    }
+
+                    if (entry.target.querySelector(".label")) {
+                        anime({
+                            targets: entry.target.querySelectorAll(".label"),
+                            opacity: [0, 1],
+                            translateY: [12, 0],
+                            easing: "easeOutCubic",
+                            duration: 520,
+                            delay: anime.stagger(70, { start: 120 })
+                        });
+                    }
+
+                    if (entry.target.querySelector(".timeline-item")) {
+                        anime({
+                            targets: entry.target.querySelectorAll(".timeline-item"),
+                            opacity: [0, 1],
+                            translateY: [18, 0],
+                            easing: "easeOutCubic",
+                            duration: 620,
+                            delay: anime.stagger(90, { start: 120 })
+                        });
+                    }
+
+                    obs.unobserve(entry.target);
+                });
+            }, {
+                root: null,
+                rootMargin: "0px 0px -12% 0px",
+                threshold: 0
+            });
+
+            sections.forEach((section) => observer.observe(section));
+
+            document.addEventListener("keydown", (e) => {
+                if (e.key !== "Escape") {
+                    return;
+                }
+                if (logoLightbox && !logoLightbox.hasAttribute("hidden")) {
+                    closeLogoLightbox();
+                    return;
+                }
+                if (layoutWrapper && layoutWrapper.classList.contains("mobile-sidebar-open") && isMobileNavLayout()) {
+                    closeMobileSidebar();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
