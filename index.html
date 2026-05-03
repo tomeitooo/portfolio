@@ -88,6 +88,18 @@
                 width: 62%;
                 padding: 2.5rem 1.75rem;
             }
+
+            .mobile-intro-panel {
+                display: none !important;
+            }
+
+            .mobile-works-panel {
+                display: block !important;
+            }
+
+            .mobile-works-heading {
+                display: none !important;
+            }
         }
 
         @media (min-width: 1200px) {
@@ -190,6 +202,39 @@
 
             .sidebar-footer {
                 margin-top: 3rem;
+            }
+
+            .mobile-intro-panel {
+                display: block;
+                padding-top: 0.25rem;
+                padding-bottom: 2rem;
+            }
+
+            .mobile-works-panel {
+                display: none;
+            }
+
+            .mobile-works-heading {
+                display: none;
+                margin: 0 0 1.5rem;
+                font-size: 0.92rem;
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
+                color: var(--text-sub);
+                font-family: "Inter", sans-serif;
+                font-weight: 400;
+            }
+
+            .layout-wrapper.mobile-view-works .mobile-intro-panel {
+                display: none;
+            }
+
+            .layout-wrapper.mobile-view-works .mobile-works-panel {
+                display: block;
+            }
+
+            .layout-wrapper.mobile-view-works .mobile-works-heading {
+                display: block;
             }
 
             .mobile-nav-burger {
@@ -535,7 +580,15 @@
     </aside>
 
     <main class="main-content">
-        <ul id="work-list" class="work-list"></ul>
+        <div class="mobile-intro-panel" id="mobile-intro-panel">
+            <span id="mobile-intro-role" class="site-role"></span>
+            <h1 id="mobile-intro-name" class="site-title"></h1>
+            <p id="mobile-intro-bio" class="site-bio"></p>
+        </div>
+        <div class="mobile-works-panel" id="works">
+            <h2 class="mobile-works-heading">Works</h2>
+            <ul id="work-list" class="work-list"></ul>
+        </div>
     </main>
 </div>
 
@@ -577,6 +630,7 @@
         // サイドバーのリンク設定
         links: [
             { label: "Home", url: "index.html" },
+            { label: "Works", url: "#works" },
             { label: "About", url: "about.html" },
             { label: "X (Twitter)", url: "https://x.com/tomeit__o" },
             { label: "GitHub", url: "https://github.com/tomeitooo" },
@@ -601,13 +655,32 @@
         document.getElementById('year').textContent = new Date().getFullYear();
         document.getElementById('site-credit').textContent = monoConfig.credit;
 
+        const mobileIntroRole = document.getElementById('mobile-intro-role');
+        const mobileIntroName = document.getElementById('mobile-intro-name');
+        const mobileIntroBio = document.getElementById('mobile-intro-bio');
+        if (mobileIntroRole) {
+            mobileIntroRole.textContent = monoConfig.role;
+        }
+        if (mobileIntroName) {
+            mobileIntroName.innerHTML = monoConfig.name;
+        }
+        if (mobileIntroBio) {
+            mobileIntroBio.innerHTML = monoConfig.bio.replace(/\n/g, '<br>');
+        }
+
         const linkList = document.getElementById('link-list');
         monoConfig.links.forEach(link => {
             const li = document.createElement('li');
             li.className = 'nav-item';
             const isExternal = /^(https?:)?\/\//.test(link.url) || link.url.startsWith('mailto:');
             const targetAttrs = isExternal ? ' target="_blank" rel="noopener noreferrer"' : '';
-            li.innerHTML = `<a href="${link.url}"${targetAttrs}>→ ${link.label}</a>`;
+            let dataNav = '';
+            if (link.url === '#works') {
+                dataNav = ' data-nav="works"';
+            } else if (link.label === 'Home') {
+                dataNav = ' data-nav="home"';
+            }
+            li.innerHTML = `<a href="${link.url}"${dataNav}${targetAttrs}>→ ${link.label}</a>`;
             linkList.appendChild(li);
         });
 
@@ -715,6 +788,40 @@
             syncMobileNavBurger(false);
         }
 
+        function applyMobileWorksViewFromHash() {
+            if (!layoutWrapper) {
+                return;
+            }
+            if (isMobileNavLayout() && window.location.hash === '#works') {
+                layoutWrapper.classList.add('mobile-view-works');
+            } else if (window.location.hash !== '#works') {
+                layoutWrapper.classList.remove('mobile-view-works');
+            }
+        }
+
+        linkList.addEventListener('click', (e) => {
+            const a = e.target.closest('a');
+            if (!a || !layoutWrapper || !isMobileNavLayout()) {
+                return;
+            }
+            if (a.dataset.nav === 'works') {
+                e.preventDefault();
+                layoutWrapper.classList.add('mobile-view-works');
+                const base = `${window.location.pathname}${window.location.search}`;
+                window.history.replaceState(null, '', `${base}#works`);
+                closeMobileSidebar();
+                window.scrollTo(0, 0);
+                return;
+            }
+            if (a.dataset.nav === 'home') {
+                e.preventDefault();
+                layoutWrapper.classList.remove('mobile-view-works');
+                window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}`);
+                closeMobileSidebar();
+                window.scrollTo(0, 0);
+            }
+        });
+
         if (mobileNavBurger && sidebarBackdrop) {
             mobileNavBurger.addEventListener('click', toggleMobileSidebar);
             sidebarBackdrop.addEventListener('click', closeMobileSidebar);
@@ -730,9 +837,20 @@
         mqMobileNav.addEventListener('change', () => {
             if (!isMobileNavLayout()) {
                 closeMobileSidebar();
+                if (layoutWrapper) {
+                    layoutWrapper.classList.remove('mobile-view-works');
+                }
+                if (window.location.hash === '#works') {
+                    window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}`);
+                }
                 anime.remove('.sidebar');
+            } else {
+                applyMobileWorksViewFromHash();
             }
         });
+
+        window.addEventListener('hashchange', applyMobileWorksViewFromHash);
+        applyMobileWorksViewFromHash();
 
         // サイドバー：デスクトップは従来アニメ／モバイルはメインのみ表示しメニューで別パネル
         if (isMobileNavLayout()) {
