@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="index, follow">
 
-    <title>Tomeito - Portfolio</title>
+    <title>Works - Tomeito</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
     
@@ -205,34 +205,6 @@
 
             body:not(.page-works) .main-content > .work-list {
                 display: none !important;
-            }
-
-            body.page-home .mobile-nav-burger,
-            body.page-home .sidebar-backdrop {
-                display: none !important;
-            }
-
-            body.page-home .sidebar {
-                display: none !important;
-            }
-
-            body.page-home .mobile-home-nav {
-                display: block;
-                margin-top: 0.5rem;
-                padding-top: 1.75rem;
-                border-top: 1px solid var(--accent-color);
-            }
-
-            body.page-home .mobile-home-nav .nav-list {
-                list-style: none;
-                padding: 0;
-                margin: 0;
-            }
-
-            body.page-home .mobile-home-credit {
-                font-size: 0.75rem;
-                color: #444;
-                margin: 1.75rem 0 0;
             }
 
             .mobile-nav-burger {
@@ -551,18 +523,24 @@
             opacity: 0;
         }
 
-        .mobile-home-nav {
-            display: none;
+        .page-works-title {
+            margin: 0 0 1.25rem;
+            font-size: 0.92rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-sub);
+            font-family: "Inter", sans-serif;
+            font-weight: 400;
         }
 
         @media (min-width: 768px) {
-            .mobile-home-nav {
-                display: none !important;
+            body.page-works .page-works-title {
+                display: none;
             }
         }
     </style>
 </head>
-<body class="page-home">
+<body class="page-works">
 
 <button type="button" class="mobile-nav-burger" id="mobile-nav-burger" aria-controls="sidebar" aria-expanded="false" aria-label="メニューを開く">
     <span></span>
@@ -588,17 +566,7 @@
     </aside>
 
     <main class="main-content">
-        <div class="mobile-intro-panel" id="mobile-intro-panel">
-            <span id="mobile-intro-role" class="site-role"></span>
-            <h1 id="mobile-intro-name" class="site-title"></h1>
-            <p id="mobile-intro-bio" class="site-bio"></p>
-        </div>
-        <nav class="mobile-home-nav" id="mobile-home-nav" aria-label="サイト内のリンク">
-            <ul id="mobile-home-link-list" class="nav-list"></ul>
-            <p class="mobile-home-credit">
-                &copy; <span id="mobile-home-year"></span> <span id="mobile-home-site-credit"></span>
-            </p>
-        </nav>
+        <h1 class="page-works-title">Works</h1>
         <ul id="work-list" class="work-list"></ul>
     </main>
 </div>
@@ -663,17 +631,8 @@
         document.getElementById('user-name').innerHTML = monoConfig.name; // brタグ許可のためinnerHTML
         document.getElementById('user-role').textContent = monoConfig.role;
         document.getElementById('user-bio').innerHTML = monoConfig.bio.replace(/\n/g, '<br>');
-        const yearNow = new Date().getFullYear();
-        document.getElementById('year').textContent = yearNow;
+        document.getElementById('year').textContent = new Date().getFullYear();
         document.getElementById('site-credit').textContent = monoConfig.credit;
-        const mobileHomeYear = document.getElementById('mobile-home-year');
-        const mobileHomeSiteCredit = document.getElementById('mobile-home-site-credit');
-        if (mobileHomeYear) {
-            mobileHomeYear.textContent = yearNow;
-        }
-        if (mobileHomeSiteCredit) {
-            mobileHomeSiteCredit.textContent = monoConfig.credit;
-        }
 
         const mobileIntroRole = document.getElementById('mobile-intro-role');
         const mobileIntroName = document.getElementById('mobile-intro-name');
@@ -697,21 +656,6 @@
             li.innerHTML = `<a href="${link.url}"${targetAttrs}>→ ${link.label}</a>`;
             linkList.appendChild(li);
         });
-
-        const mobileHomeLinkList = document.getElementById('mobile-home-link-list');
-        if (mobileHomeLinkList) {
-            monoConfig.links
-                .filter((link) => link.label !== 'Works')
-                .forEach((link) => {
-                    const li = document.createElement('li');
-                    li.className = 'nav-item';
-                    const isExternal = /^(https?:)?\/\//.test(link.url) || link.url.startsWith('mailto:');
-                    const targetAttrs = isExternal ? ' target="_blank" rel="noopener noreferrer"' : '';
-                    const currentAttr = link.label === 'Home' ? ' aria-current="page"' : '';
-                    li.innerHTML = `<a href="${link.url}"${targetAttrs}${currentAttr}>→ ${link.label}</a>`;
-                    mobileHomeLinkList.appendChild(li);
-                });
-        }
 
         // --- 作品リスト生成（works-config.js の MONO_WORKS のみ。自動連番は行いません）
         const workList = document.getElementById('work-list');
@@ -776,31 +720,6 @@
             });
         }
 
-        function playMobileHomeNavReveal() {
-            const navItems = document.querySelectorAll('#mobile-home-link-list .nav-item');
-            if (!navItems.length) {
-                return;
-            }
-            const staggerMs = 85;
-            const startDelay = 140;
-            anime({
-                targets: navItems,
-                opacity: [0, 1],
-                translateX: [-12, 0],
-                easing: 'easeOutCubic',
-                duration: 580,
-                delay: anime.stagger(staggerMs, { start: startDelay })
-            });
-            anime({
-                targets: '.mobile-home-credit',
-                opacity: [0, 1],
-                translateX: [-12, 0],
-                easing: 'easeOutCubic',
-                duration: 580,
-                delay: staggerMs * navItems.length + 40 + startDelay
-            });
-        }
-
         const layoutWrapper = document.getElementById('layout-wrapper');
         const sidebarBackdrop = document.getElementById('sidebar-backdrop');
         const mobileNavBurger = document.getElementById('mobile-nav-burger');
@@ -858,33 +777,11 @@
             if (!isMobileNavLayout()) {
                 closeMobileSidebar();
                 anime.remove('.sidebar');
-                anime.remove('#mobile-home-link-list .nav-item');
-                anime.remove('.mobile-home-credit');
-                anime.set('.sidebar', { opacity: 1, translateX: 0 });
-                anime.set('.sidebar-footer .nav-item', { opacity: 1, translateX: 0 });
-                anime.set('.sidebar-credit', { opacity: 1, translateX: 0 });
-            } else if (document.body.classList.contains('page-home')) {
-                anime.set('#mobile-home-link-list .nav-item', { opacity: 0, translateX: -12 });
-                anime.set('.mobile-home-credit', { opacity: 0, translateX: -12 });
-                requestAnimationFrame(() => {
-                    playMobileHomeNavReveal();
-                });
-            } else {
-                anime.set('.sidebar', { opacity: 1 });
-                anime.set('.sidebar-footer .nav-item', { opacity: 0, translateX: -12 });
-                anime.set('.sidebar-credit', { opacity: 0, translateX: -12 });
             }
         });
 
-        // サイドバー：デスクトップは従来アニメ／モバイルホームはメイン内ナビを表示
-        const isMobileHome = isMobileNavLayout() && document.body.classList.contains('page-home');
-        if (isMobileHome) {
-            anime.set('#mobile-home-link-list .nav-item', { opacity: 0, translateX: -12 });
-            anime.set('.mobile-home-credit', { opacity: 0, translateX: -12 });
-            requestAnimationFrame(() => {
-                playMobileHomeNavReveal();
-            });
-        } else if (isMobileNavLayout()) {
+        // サイドバー：デスクトップは従来アニメ／モバイルはメインのみ表示しメニューで別パネル
+        if (isMobileNavLayout()) {
             anime.set('.sidebar', { opacity: 1 });
             anime.set('.sidebar-footer .nav-item', { opacity: 0, translateX: -12 });
             anime.set('.sidebar-credit', { opacity: 0, translateX: -12 });
