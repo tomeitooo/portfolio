@@ -6,7 +6,8 @@
     <meta name="robots" content="index, follow">
 
     <title>Works - Tomeito</title>
-    
+    <link rel="icon" href="image/tomeit-o_gray_logo.svg" type="image/svg+xml">
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Noto+Sans+JP:wght@300;400;500&family=Zen+Old+Mincho:wght@400;500;600;700;900&display=swap" rel="stylesheet">
@@ -606,11 +607,11 @@
         // 作品リスト → works-config.js の MONO_WORKS
         works: typeof MONO_WORKS !== "undefined" ? MONO_WORKS : [],
         
-        // サイドバーのリンク設定
+        // サイドバーのリンク設定（MONO_SITE_BASE: works-config.js）
         links: [
-            { label: "Home", url: "/" },
-            { label: "Works", url: "/works" },
-            { label: "About", url: "/about" },
+            { label: "Home", url: typeof monoResolveNavUrl === "function" ? monoResolveNavUrl("/") : "/" },
+            { label: "Works", url: typeof monoResolveNavUrl === "function" ? monoResolveNavUrl("/works") : "/works" },
+            { label: "About", url: typeof monoResolveNavUrl === "function" ? monoResolveNavUrl("/about") : "/about" },
             { label: "X (Twitter)", url: "https://x.com/tomeit__o" },
             { label: "GitHub", url: "https://github.com/tomeitooo" },
             { label: "Contact", url: "mailto:info@tomeit-o.com" }
@@ -651,8 +652,7 @@
         monoConfig.links.forEach(link => {
             const li = document.createElement('li');
             li.className = 'nav-item';
-            const isExternal = /^(https?:)?\/\//.test(link.url) || link.url.startsWith('mailto:');
-            const targetAttrs = isExternal ? ' target="_blank" rel="noopener noreferrer"' : '';
+            const targetAttrs = typeof monoLinkTargetAttrs === 'function' ? monoLinkTargetAttrs(link.url) : '';
             li.innerHTML = `<a href="${link.url}"${targetAttrs}>→ ${link.label}</a>`;
             linkList.appendChild(li);
         });

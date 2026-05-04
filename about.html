@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="MONOトーンの世界観で構成したABOUTページです。">
     <title>About - MONO</title>
+    <link rel="icon" href="image/tomeit-o_gray_logo.svg" type="image/svg+xml">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Noto+Sans+JP:wght@300;400;500&family=Zen+Old+Mincho:wght@400;500;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="Zen_Old_Mincho/zenoldmincho.css">
@@ -788,6 +789,26 @@
     </div>
 
     <script src="works-config.js"></script>
+    <script>
+        (function () {
+            function applyPortfolioNavBase() {
+                if (typeof monoResolveNavUrl !== "function") {
+                    return;
+                }
+                document.querySelectorAll('.sidebar-footer .nav-list a[href]').forEach(function (a) {
+                    var href = a.getAttribute("href");
+                    if (href === "/" || href === "/works" || href === "/about") {
+                        a.setAttribute("href", monoResolveNavUrl(href));
+                    }
+                });
+            }
+            if (document.readyState === "loading") {
+                document.addEventListener("DOMContentLoaded", applyPortfolioNavBase);
+            } else {
+                applyPortfolioNavBase();
+            }
+        })();
+    </script>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             const logoLightbox = document.getElementById("logo-lightbox");
