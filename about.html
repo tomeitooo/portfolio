@@ -697,7 +697,7 @@
                     <li class="nav-item"><a href="https://github.com/tomeitooo" target="_blank" rel="noopener noreferrer">→ GitHub</a></li>
                     <li class="nav-item"><a href="mailto:info@tomeit-o.com">→ Contact</a></li>
                 </ul>
-                <p class="sidebar-credit">&copy; 2026 Tomeito</p>
+                <p class="sidebar-credit">&copy; <span id="sidebar-credit-year"></span> Tomeito All rights reserved.</p>
             </div>
         </aside>
 
@@ -811,6 +811,11 @@
     </script>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
+            const sidebarCreditYear = document.getElementById("sidebar-credit-year");
+            if (sidebarCreditYear) {
+                sidebarCreditYear.textContent = String(new Date().getFullYear());
+            }
+
             const logoLightbox = document.getElementById("logo-lightbox");
             const logoLightboxImg = document.getElementById("logo-lightbox-img");
             const logoLightboxClose = document.getElementById("logo-lightbox-close");
