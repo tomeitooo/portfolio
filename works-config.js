@@ -51,7 +51,7 @@ window.MONO_WORKS = [
     {
         title: "ポートフォリオ",
         category: "Web",
-        imageFile: "no_image.png",
+        imageFile: "portfolio.png",
         desc: "本ポートフォリオサイトです。",
         url: "https://portfolio.tomeit-o.com/",
         year: "2026",
